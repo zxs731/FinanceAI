@@ -25,30 +25,6 @@ class GetCurrentTimeTool:
         now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         return type('Resp', (object,), {"content": [type('Text', (object,), {'text': now})()]})
 
-class GetCurrentLocationTool:
-    name = "getCurrentLocation"
-    description = "获取当前地点"
-    inputSchema = {}
-    async def call_tool(self, tool_name, tool_args):
-        # 简单返回，实际可以集成定位API
-        location = "Tianjin"
-        return type('Resp', (object,), {"content": [type('Text', (object,), {'text': location})()]})
-
-class GetWeatherTool:
-    name = "getWeather"
-    description = "根据地点获取天气情况"
-    inputSchema = {
-        "type": "object",
-        "properties": {
-            "location": {"type": "string", "description": "查询天气的地点"}
-        },
-        "required": ["location"],
-    }
-    async def call_tool(self, tool_name, tool_args):
-        location = tool_args.get("location", "Shanghai")
-        # 实际可调用天气API，这里用静态值
-        weather_info = f"{location}: 温度 7℃-15℃，晴"
-        return type('Resp', (object,), {"content": [type('Text', (object,), {'text': weather_info})()]})
 
 class GetGoldPriceTool:
     name = "getGoldPrice"
@@ -126,8 +102,6 @@ class ChatbotDemo:
             api_key=os.environ["openai_api_key"]
         )
         self.tools = [GetCurrentTimeTool(), 
-                      GetCurrentLocationTool(), 
-                      GetWeatherTool(),
                       GetGoldPriceTool(),
                       GetHistoryGoldPriceTool(),
                       SendEmailTool()]
